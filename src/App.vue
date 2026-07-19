@@ -1,25 +1,33 @@
 <template>
   <div id="nav">
     <router-link to="/">Home</router-link> -
-    <router-link to="/basket">Shopping Bag ({{this.productsInBag.length}})</router-link> 
+    <router-link to="/basket">Shopping Bag ({{productsInBag.length}})</router-link> 
   </div>
   <router-view/>
 </template>
 
 <script>
 
-  import { mapState } from 'vuex'
+  //import { mapState } from 'vuex'
+  import { mapState, mapActions } from 'pinia'
+  import { useBagStore } from './storePinia/bagStore'
+  import { useProductStore } from './storePinia/productStore'
   export default {
 
     created() {
-      this.$store.dispatch('loadProducts');
-      this.$store.dispatch('loadBag');
+      //this.$store.dispatch('loadProducts');
+      //this.$store.dispatch('loadBag');
+      this.loadProducts();
+      this.loadBag();
     },
-    computed: mapState([
-      'productsInBag' 
-    ]),
-
-  }
+    computed: {
+      ...mapState(useBagStore, ['productsInBag'])
+    },
+    methods: {
+      ...mapActions(useProductStore, ['loadProducts']),
+      ...mapActions(useBagStore, ['loadBag'])
+    }
+  } 
 </script>
 
 

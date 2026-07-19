@@ -5,7 +5,8 @@
       <template v-if="productsInBag.length">
 
         <div v-for="(product, index) in productsInBag" :key="index" class="item">
-          <div class="remove" @click="this.$store.dispatch('removeFromBag', product.id)">Remove item</div>
+          <!--<div class="remove" @click="this.$store.dispatch('removeFromBag', product.id)">Remove item</div>-->
+          <div class="remove" @click="handleRemove(product.id)">Remove item</div>
           <div class="photo">
             <img :src="product.image" alt="">
           </div>
@@ -21,7 +22,8 @@
             <span class="amount">US$ {{ (product.price * product.quantity).toFixed(2) }}</span>
           </div>
         </div>
-        <div class="grand-total"> Grand Total: US$ {{orderTotal()}}</div>
+        <!--<div class="grand-total"> Grand Total: US$ {{orderTotal()}}</div>-->
+        <div class="grand-total"> Grand Total: US$ {{ orderTotal }}</div>
 
       </template>
 
@@ -35,23 +37,40 @@
 
 <script>
 
-import { mapState } from 'vuex'
+//import { mapState } from 'vuex'
+import { mapState, mapActions } from 'pinia'
+import { useBagStore } from '../storePinia/bagStore'
 
 export default {
   name: 'ShoppingBasket',
-
-  methods: {
+  computed: {
+    //mapState(['productsInBag']),
+    ...mapState(useBagStore, ['productsInBag']),
     orderTotal() {
-      var total = 0;
+      let total = 0;
       this.productsInBag.forEach(item => {
         total += item.price * item.quantity;
       });
       return total.toFixed(2);
     }
   },
-  computed: mapState([
-    'productsInBag' 
-  ]),
+  methods: {
+    ...mapActions(useBagStore, ['removeFromBag']),
+    
+    /*
+    orderTotal() {
+      var total = 0;
+      this.productsInBag.forEach(item => {
+        total += item.price * item.quantity;
+      });
+      return total.toFixed(2);
+    }*/
+    handleRemove(productId) {
+      if (this.removeFromBag) {
+        this.removeFromBag(productId);
+      }
+    }
+  } 
 }
 </script>
 

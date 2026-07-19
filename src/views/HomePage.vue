@@ -23,7 +23,10 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+//import { mapState } from 'vuex'
+import { mapState, mapActions } from 'pinia'
+import { useProductStore } from '../storePinia/productStore'
+import { useBagStore } from '../storePinia/bagStore'
 
 export default {
   name: 'HomePage',
@@ -32,15 +35,18 @@ export default {
       
     }
   },
-  computed: mapState([
-    'products', 
-    'productsInBag' 
-  ]),
+  computed: {
+    //mapState(['products', 'productsInBag' ])
+    ...mapState(useProductStore, ['products']),
+    ...mapState(useBagStore, ['productsInBag'])
+  },
 
   methods: {
+    ...mapActions(useBagStore, ['addToBag']),
     addToBag(product) {
       product.quantity = 1;
-      this.$store.dispatch('addToBag', product);
+      //this.$store.dispatch('addToBag', product);
+      this.addToBag(product);
     },
     isInBag(product) {
       return this.productsInBag.find(item => item.id == product.id)
