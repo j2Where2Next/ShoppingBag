@@ -43,7 +43,7 @@ export default {
 
   methods: {
     ...mapActions(useBagStore, ['addToBag']),
-    addToBag(product) {
+    handleAddToBag(product) {
       product.quantity = 1;
       //this.$store.dispatch('addToBag', product);
       this.addToBag(product);
