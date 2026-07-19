@@ -19,7 +19,7 @@
               <span class="quantity">{{product.quantity}}</span>
               <button @click="product.quantity++">+</button>
             </span>
-            <span class="amount">US$ {{ (product.price * product.quantity).toFixed(2) }}</span>
+            <span class="amount">US$ {{ calculateItemTotal(product) }}</span>
           </div>
         </div>
         <!--<div class="grand-total"> Grand Total: US$ {{orderTotal()}}</div>-->
@@ -69,6 +69,17 @@ export default {
       if (this.removeFromBag) {
         this.removeFromBag(productId);
       }
+    },
+    calculateItemTotal(product) {
+      console.log('product:', product);
+      const price = Number(product.price);
+      const quantity = Number(product.quantity || 1);
+      
+      if (isNaN(price)) {
+        console.error("Pricing properties missing on this object:", product);
+        return '0.00';
+      }
+      return (price * quantity).toFixed(2);
     }
   } 
 }
