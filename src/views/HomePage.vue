@@ -42,7 +42,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(useBagStore, ['addToBag', ]),
+    ...mapActions(useBagStore, ['addToBag', 'removeFromBag']),
     
     handleAddToBag(product) {
       const productToBag = { ...product, quantity: 1 };
