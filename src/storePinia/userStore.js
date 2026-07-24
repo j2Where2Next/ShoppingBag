@@ -20,6 +20,9 @@ export const useUserStore = defineStore('userStore', {
         const baseURL = import.meta.env.VITE_API_URL || 'https://dummyjson.com'
         const response = await axios.get(`${baseURL}/products`)
         
+        // 🛠️ ARTIFICIAL DELAY: Pauses code execution for 2 seconds (2000ms)
+        await new Promise(resolve => setTimeout(resolve, 2000))
+
         // Save the direct parsed data array to state
         this.products = response.data.products
       } catch (err) {
