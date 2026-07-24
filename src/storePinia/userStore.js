@@ -17,7 +17,8 @@ export const useUserStore = defineStore('userStore', {
       
       try {
         // Axios handles HTTP errors (4xx/5xx) and JSON parsing automatically
-         const response = await axios.get('/api/products') // <-- Use the proxy path defined in vite.config.js
+        const baseURL = import.meta.env.VITE_API_URL || 'https://dummyjson.com'
+        const response = await axios.get(`${baseURL}/products`)
         
         // Save the direct parsed data array to state
         this.products = response.data.products
