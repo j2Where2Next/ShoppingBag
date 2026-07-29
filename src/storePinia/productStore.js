@@ -9,7 +9,8 @@ export const useProductStore = defineStore('products', {
   actions: {
     async loadProducts() {
       try {
-        const response = await axios.get('https://fakestoreapi.com/products')
+        const baseURL = import.meta.env.VITE_API_BASE_URL || 'https://fakestoreapi.com'
+        const response = await axios.get(`${baseURL}/products`)
         // Direct assignment replaces the Vuex mutation!
         this.products = response.data 
       } catch (error) {
